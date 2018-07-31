@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>userList</title>
+    <!-- 最新版本的 Bootstrap 核心 CSS 文件 -->
+    <!--<link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">-->
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+    <style type="text/css">
+        .imgs{
+            width: 640px;
+            height: 650px;
+        }
+    </style>
+</head>
+<body onload="message()">
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-4">
+            <table  class="table table-condensed">
+                <caption><h3>Student Info</h3></caption>
+                <nav aria-label="...">
+                    <ul class="pager">
+                        <li><a th:href="@{'/userList/?pageNum='+${clientPage.pageNum-1}}">Previous</a></li>
+                        <li><a th:href="@{'/userList/?pageNum='+${clientPage.pageNum+1}}">Next</a></li>
+                    </ul>
+                </nav>
+                <tr>
+                    <th>学号</th>
+                    <th>姓名</th>
+                    <th>生日</th>
+                    <th colspan="3" style="text-align: center">操作</th>
+                </tr>
+                <tr th:each="student,photoList:${students}">
+                    <td id="port" th:text="${student.studentPort}"></td>
+                    <td><a th:text="${student.studentName}" th:href="@{'/lookPhoto/'+${student.studentPort}+'/?pageNum='+${clientPage.pageNum}}"></a></td>
+                    <td th:text="${student.studentBirthday}"></td>
+                    <td><a th:href="@{'/student/deleteStudent/'+${student.studentPort}+'/?pageNum='+${clientPage.pageNum}}">删除</a></td>
+                    <td><a th:href="@{'/toUpdate/'+${student.studentPort}}">修改</a></td>
+                </tr>
+            </table>
+            <h3>添加学生</h3>
+            <form action="/student/addStudent" method="post" class="form-inline">
+                <div class="form-group">
+                    <label for="studentName">姓名</label>
+                    <input type="text" class="form-control" name="studentName" id="studentName" placeholder="studentName">
+                </div>
+                <div class="form-group">
+                    <label for="studentBirthday">生日</label>
+                    <input type="date" class="form-control" id="studentBirthday" name="studentBirthday" placeholder="studentBirthday">
+                </div><br/>
+                <button type="submit" class="btn btn-default">Yes</button>
+                <button type="reset" class="btn btn-default">No</button>
+            </form>
+
+        </div>
+        <div class="col-md-6">
+            <div id="imgContext" class="content">
+                <select class="form-control">
+                    <option selected="selected"><h5>点击学生姓名查看图片</h5></option>
+                    <option th:each="photo:${photos}" th:value="${photo.photoId}" th:text="${photo.photoId}"></option>
+                </select>
+                <img class="imgs" th:each="photo:${photos}" th:title="${photo.photoId}" th:src="${photo.photoStr}" />
+            </div>
+        </div>
+        <div class="col-md-2">
+            <button onclick="up()" class="glyphicon glyphicon-menu-up btn btn-default" aria-hidden="true"></button>
+            <button onclick="down()" class="glyphicon glyphicon-menu-down btn btn-default" aria-hidden="true"></button>
+            <button title="删除" onclick="del()" class="glyphicon glyphicon-calendar btn btn-default" aria-hidden="true"></button>
+            <h3>上传图片</h3>
+            <form action="/upload" method="post" enctype="multipart/form-data">
+                <select  class="form-control" name="studentPort">
+                    <option name="studentPort" th:each="student,photoList:${students}" th:value="${student.studentPort}" th:selected="${student.studentPort}" th:text="${student.studentName}"></option>
+                </select>
+                <div class="form-group">
+                    <label for="file">File input</label>
+                    <input type="file" id="file" onchange="imgChange(event)" accept=".gif,.jpg,.jpeg,.png"/>
+                </div>
+                <div style="width: 100px;height: 100px">
+                    <img  style="width: 100px;height: 100px;" id="showImage" alt=""/>
+                </div>
+                <input hidden="hidden" type="text" id="inputs" name="photoBase64"/>
+                <button type="submit" class="btn btn-default">Submit</button>
+            </form><br/>
+            <br/>
+            <br/>
+            <br/>
+            <br/>
+            <br/>
+            <br/>
+            <br/>
+            <hr/>
+            <div class="default-color0">
+                <address>
+                    Written by <strong>王旭.</strong><br>
+                    Contact me:<br>
+                    Phone:156-2918-3059<br>
+                    Email:<a href="mailto:1315989322@qq.com">1315989322@qq.com</a>
+                    CHINA
+                </address>
+            </div>
+
+        </div>
+
+    </div>
+    <div>
+        <input id="p" hidden="hidden" type="text" th:value="${message}"/>
+    </div>
+</div>
+<script type="text/javascript" th:src="@{/js/jquery-3.3.1.min.js}"></script>
+<script type="text/javascript" th:src="@{/js/bootstrap.min.js}"></script>
+<script type="text/javascript" th:src="@{/js/userList.js}"></script>
+</body>
+</html>

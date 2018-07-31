@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/bootstrap.min.css}"/>
+</head>
+<body>
+    <div class="container">
+        <nav>Update Student</nav>
+        <form action="/student/updateStudent" method="post" class="form-inline">
+            <input type="number" style="visibility: hidden" name="studentPort" th:value="${student.studentPort}"/>
+            <div class="form-group">
+                <label for="studentName">姓名</label>
+                <input type="text" class="form-control" id="studentName" th:value="${student.studentName}" name="studentName" placeholder="studentName">
+            </div>
+            <div class="form-group">
+                <label for="studentBirthday">生日</label>
+                <input type="date" class="form-control" id="studentBirthday" th:value="${student.studentBirthday}"  name="studentBirthday" placeholder="studentBirthday">
+            </div>
+            <button type="submit" class="btn btn-default">Ready</button>
+            <button type="reset" class="btn btn-default">Reset</button>
+        </form>
+
+    </div>
+</body>
+</html>
